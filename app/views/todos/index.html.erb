@@ -1,0 +1,54 @@
+<title>Shared Todo App </title>
+<div class="container">
+  <div class="row">
+    <div class="span4">
+      <h1>Shared Todo App</h1>
+      <hr>
+      <p>All your todos here</p>
+          
+        <%= form_for @new_todo, :url => { :action => "add" }  do |f|  %>
+          <%= f.text_field  :todo_item %>
+          <%= f.submit "Add", class: "btn btn-primary" %>
+    <%end%>
+          
+        <% if !flash[:error].nil? %>
+          <div class="alert alert-error">
+              <button type="button" class="close" data-dismiss="alert" ></button>
+              <strong><%= flash[:error] %></strong>
+            </div>
+        <% end %>
+
+    <% if flash[:success].nil? %>
+           <div class="alert alert-success">
+             show flash[:success]
+           </div>
+      <% end %>
+          
+      <div class="well">
+        <%= form_tag("/todos/complete/", :method => "post") do %>
+      <% if(@todo_items != nil) %>
+            <ul style="list-style-type:none;">
+            <% @todo_items.each do |t| %> 
+                <% if t.completed == true %>
+                   <li style="color:grey;"> <%= check_box_tag  "todos_checkbox[]",t.id %>  <strike><%= t.todo_item %>
+                <% if !t.deadline.nil?%>
+                  <%= time_tag t.dead_line %>
+                <% end %>
+        </strike> </li>
+                <% else %>
+                   <li> <%= check_box_tag  "todos_checkbox[]",t.id %> <%= t.todo_item %> 
+                      <% if !t.deadline.nil?%>
+                      <%= time_tag t.dead_line %>
+            <% end %> </li>
+                <% end %>
+            </ul>
+          <%end%>
+          <%= submit_tag("Complete Todos", :class=>"btn btn-success", data: {confirm: "¿Are you sure?"}) %>
+          <%= submit_tag("Incomplete items", :class=>"btn btn-success") %>
+          <% else %>
+              <p>No assignments</p>
+    <%end %>
+      </div> <!-- well -->
+    </div> <!-- span4 -->
+  </div> <!-- row -->
+</div> <!-- container -->
