@@ -1,6 +1,6 @@
 SharedTodoApp::Application.routes.draw do
   
-  #get "todos/index"
+  get "todos/index"
   match "todos/index" => "todos#index", :as => :index
   match "todos/add" => "todos#add", :via => :post
   match 'todos/complete' => 'todos#complete', :via => :post
